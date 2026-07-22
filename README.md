@@ -1,2 +1,2 @@
 # smart-lead
-Smart Lead AI platform
+Smart Lead Qualification 
