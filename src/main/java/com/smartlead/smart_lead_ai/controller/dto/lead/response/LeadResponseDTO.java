@@ -1,4 +1,4 @@
-package com.smartlead.smart_lead_ai.controller.dto;
+package com.smartlead.smart_lead_ai.controller.dto.lead.response;
 
 import lombok.Builder;
 

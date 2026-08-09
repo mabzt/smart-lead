@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/smart-lead-db
-    username: local
-    password: localpass
+    username: ${{ secrets.DB_USERNAME }}
+    password: ${{ secrets.DB_PASSWORD }}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -23,12 +23,46 @@ spring:
         use_sql_comments: true
         default_batch_fetch_size: 10
 
+  threads:
+    virtual:
+      enabled: true
+
+huggingface:
+  enabled: true
+  baseUrl: https://router.huggingface.co
+  token: ${{ secrets.HF_TOKEN }}
+  maxTokens: 512
+  temperature: 0.7
+  stream: false
+  model: meta-llama/Llama-3.3-70B-Instruct
+
 springdoc:
   api-docs:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
+
+resilience4j:
+  retry:
+    instances:
+      hugginfface:
+        max-attempts: 3
+        wait-duration:
+          seconds: 2
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+        retry-exceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - java.net.SocketTimeoutException
+  ratelimiter:
+    instances:
+      huggingface:
+        limit-for-period: 10
+        limit-refresh-period:
+          seconds: 1
+        timeout-duration:
+          seconds: 5
 
 management:
   endpoints:
