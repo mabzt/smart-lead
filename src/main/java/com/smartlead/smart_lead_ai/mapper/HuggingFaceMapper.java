@@ -1,6 +1,6 @@
 package com.smartlead.smart_lead_ai.mapper;
 
-import com.smartlead.smart_lead_ai.config.HuggingFaceConfigProperties;
+import com.smartlead.smart_lead_ai.config.huggingface.HuggingFaceConfigProperties;
 import com.smartlead.smart_lead_ai.controller.dto.huggingface.request.ChatCompletionRequest;
 import com.smartlead.smart_lead_ai.controller.dto.lead.request.LeadRequestDTO;
 import lombok.RequiredArgsConstructor;
