@@ -3,22 +3,41 @@ spring:
     name: smart-lead-ai
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/smart-lead-db
-    username: ${{ secrets.DB_USERNAME }}
-    password: ${{ secrets.DB_PASSWORD }}
-    driver-class-name: org.postgresql.Driver
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      idle-timeout: 30000
-      max-lifetime: 1800000
-      connection-timeout: 20000
+    primary:
+      url: jdbc:postgresql://localhost:5432/leads_db
+      username: local_user
+      password: local_password
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        pool-name: hikari-primary
+        maximum-pool-size: 10
+        minimum-idle: 2
+        connection-timeout: 3000
+        max-lifetime: 1800000
+        keepalive-time: 300000
+
+    replica:
+      url: jdbc:postgresql://localhost:5433/leads_db?readOnly=true
+      username: local_user
+      password: local_password
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        pool-name: hikari-replica
+        maximum-pool-size: 20
+        minimum-idle: 2
+        connection-timeout: 2000
+        max-lifetime: 1800000
+        keepalive-time: 300000
+
 
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
+        boot:
+          allow_jdbc_metadata_access: false
         format_sql: true
         use_sql_comments: true
         default_batch_fetch_size: 10
@@ -26,6 +45,8 @@ spring:
   threads:
     virtual:
       enabled: true
+  flyway:
+    enabled: false
 
 huggingface:
   enabled: true
@@ -42,6 +63,7 @@ springdoc:
   swagger-ui:
     path: /swagger-ui.html
     enabled: true
+
 
 resilience4j:
   retry:
@@ -69,3 +91,14 @@ management:
     web:
       exposure:
         include: health,metrics,prometheus
+
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure=DEBUG:

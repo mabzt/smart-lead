@@ -1,4 +1,4 @@
-package com.smartlead.smart_lead_ai.config;
+package com.smartlead.smart_lead_ai.config.huggingface;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
