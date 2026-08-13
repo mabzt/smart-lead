@@ -1,4 +1,4 @@
-package com.smartlead.smart_lead_ai.config;
+package com.smartlead.smart_lead_ai.config.huggingface;
 
 import com.smartlead.smart_lead_ai.service.HuggingFaceApi;
 import lombok.RequiredArgsConstructor;
